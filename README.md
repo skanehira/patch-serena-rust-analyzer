@@ -63,3 +63,5 @@ This wrapper calls the system's rust-analyzer command, allowing it to work even 
 - You may need to re-run this script after Serena application updates
 - The backup is saved at `~/.serena/language_servers/static/RustAnalyzer/RustAnalyzer/rust_analyzer.backup`
 - Ensure you have rust-analyzer installed on your system (e.g., via rustup)
+
+> **NOTE**: This wrapper will become unnecessary once [PR #361](https://github.com/oraios/serena/pull/361) is merged, which will add support for custom LSP configuration in Serena.
