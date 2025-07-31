@@ -14,7 +14,13 @@ By building a C wrapper that calls the system's rust-analyzer command and replac
 
 ## Usage
 
-### Install
+### Quick Install (One-liner)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/skanehira/patch-serena-rust-analyzer/main/patch-serena-rust-analyzer.sh | bash
+```
+
+### Manual Install
 
 ```bash
 ./patch-serena-rust-analyzer.sh install
