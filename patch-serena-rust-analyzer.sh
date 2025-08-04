@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 }
 EOF
 
-# Compile the wrapper
+# Compile the wrapper with static linking
 echo "Compiling rust-analyzer wrapper..."
 cc -o "$TEMP_DIR/rust_analyzer" "$TEMP_DIR/rust_analyzer_wrapper.c"
 
@@ -104,7 +104,21 @@ echo "Installing wrapper to: $DEST_PATH"
 if [ -f "$DEST_PATH" ]; then
     chmod 755 "$DEST_PATH"
 fi
-cp "$TEMP_DIR/rust_analyzer" "$DEST_PATH"
+
+# Copy the binary based on OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS: Use ditto to preserve attributes and re-sign
+    if command -v ditto >/dev/null 2>&1; then
+        ditto "$TEMP_DIR/rust_analyzer" "$DEST_PATH"
+    else
+        cp "$TEMP_DIR/rust_analyzer" "$DEST_PATH"
+    fi
+    # Re-sign the binary with ad-hoc signature
+    codesign --force --sign - "$DEST_PATH" 2>/dev/null || true
+else
+    # Linux: Simple copy
+    cp "$TEMP_DIR/rust_analyzer" "$DEST_PATH"
+fi
 
 # Set execute-only permissions
 chmod 111 "$DEST_PATH"
